@@ -1,9 +1,15 @@
-package com.bowling.demo.dtos;
+package com.bowling.demo.model.response;
 
 public class Player {
 	private String name;
 	private int score;
 	private boolean isPerfect;
+
+	public Player(String name, int score, boolean isPerfect) {
+		this.name = name;
+		this.score = score;
+		this.isPerfect = isPerfect;
+	}
 
 	public String getName() {
 		return name;
