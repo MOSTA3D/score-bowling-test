@@ -1,59 +1,83 @@
 package com.bowling.demo;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.function.Executable;
+import org.mockito.InjectMocks;
+//import org.junit.platform.
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.MediaType;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.ResultActions;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.ResponseEntity;
 
 import com.bowling.demo.controllers.BowlingController;
+import com.bowling.demo.model.response.Player;
+import com.bowling.demo.services.BowlingService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-@SpringBootTest
-@AutoConfigureMockMvc
+import Exception.BowlingException;
+
+@ExtendWith(MockitoExtension.class)
+//@RunWith(JUnitPlatform.class)
 public class ControllerTest {
-	ObjectMapper objectMapper = new ObjectMapper();
 	
-	@Autowired
-	private MockMvc mvc;
+	@InjectMocks
+	private BowlingController bowlingController;
 	
-	@Autowired
-	private BowlingController controller;
+	@Mock
+	private BowlingService service = new BowlingService();
 	
-	@Test
-	public void testControllerIsNotNull() {
-		assertThat(controller).isNotNull();
+	private List<Player> playerList;
+	private Map<String, byte[]> playerMap;
+	
+	@BeforeEach
+	public void setupBforeEach() {
+		playerList = new ArrayList<>();
+		playerList.add(new Player("mohamed", 23, false));
+		playerList.add(new Player("mahmoud", 300, true));
+		
+		playerMap = new HashMap<>();
+		byte[] scores = {1,2};		
+		playerMap.put("sheka", scores);
 	}
 	
 	@Test
-	public void testControllerThrowingExeptionIfProvidingAnEmptyKey() throws Exception {
-		Map<String, int[]> players = new HashMap<>();
-		int[] scores = {1,2};
-		players.put("", scores);
-		try {
-			String data = objectMapper.writeValueAsString(players);
-			System.out.println("the data is " + data);
-			
-			Executable executable = ()-> mvc.perform(post("/game").contentType(MediaType.APPLICATION_JSON_VALUE).content(data));
-			
-			assertThrows(NullPointerException.class, executable);
-		}catch(JsonProcessingException err) {
-			System.out.println(err.getMessage());
-		}catch(Exception err) {
-			System.out.println(err.getMessage());
-		}
+	public void testControllerNormalBehavior() {
+		// given
+		when(service.getPlayerRanks(playerMap)).thenReturn(playerList);
+		
+		// when
+		String name = (service).getPlayerRanks(playerMap).get(0).getName();
+		
+		// then
+		assertEquals(name, playerList.get(0).getName());
+	}
+	
+	@Test
+	public void testControllerThrowBowlingExceptionWhileProvidingEmptyName() {
+		// given
+		playerMap.put("", new byte[3]);
+		
+		// when
+		Executable exec = ()->{
+			bowlingController.getPlayersRanks(playerMap);
+		};
+		
+		// then
+		assertThrows(BowlingException.class, exec);
 	}
 }

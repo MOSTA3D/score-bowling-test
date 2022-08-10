@@ -35,17 +35,15 @@ public class BowlingHelper {
 		for(int i = 0; i < 20; i+=2) {
 			int value = scores[i];
 			
-			if(value < 0 || scores[i+1] < 0 || value > 30 || scores[i+1] > 30) {
+			if(value < 0 || scores[i+1] < 0 || value > 30 || scores[i+1] > 30 || (value == 10 && scores[i+1] != 0)) {
 				System.out.println("out of range");
 				throw new BowlingException("value is out of range");
 			}
 			
-			if(value + scores[i+1] == 10) {
-				score += scores[i+2];
-			}
-			
 			if(value == 10) {
 				score += (scores[i+2] + (scores[i+2] != 10 ? scores[i+3] : scores[i+4]));
+			}else if(value + scores[i+1] == 10) {
+				score += scores[i+2];
 			}
 			
 			score += (value + scores[i+1]);

@@ -18,11 +18,7 @@ public class BowlingService {
 		List<Player> playersRanks = new ArrayList<>();
 		
 		playersScores.forEach((k, v)->{
-			int score = 0;
-			for(int i = 0; i < v.length; i++) {
-				score += v[i];
-			}
-			
+			int score = BowlingHelper.getPlayerScore(v);
 			playersRanks.add(new Player(k, score, (score==300 ? true : false)));
 		});
 		

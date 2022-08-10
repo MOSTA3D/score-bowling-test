@@ -23,6 +23,11 @@ public class BowlingController {
 	@Autowired
 	private BowlingService service;
 	
+	public void setBowlingService(BowlingService bowlingService) {
+		this.service = bowlingService;
+	}
+	
+	
 	@PostMapping(
 			consumes= {MediaType.APPLICATION_JSON_VALUE},
 			produces = {MediaType.APPLICATION_JSON_VALUE}
@@ -35,7 +40,7 @@ public class BowlingController {
 				throw new BowlingException("empty player name");
 			}
 			
-			if(v.length > 22) {
+			if(v.length > 24) {
 				// your exception type
 				throw new BowlingException("lskdjf");
 			}
