@@ -21,7 +21,7 @@ import Exception.BowlingException;
 public class GetPlayerScoresUnitTests {
 	
 	// given
-	private byte[] arr = {1, 2, 3, 4, 5, 3, 2, 1, 0, 4, 1, 2, 3, 4, 5, 3, 2, 1, 0, 4, 0, 0, 0, 0};
+	private byte[] arr = {1, 2, 3, 4, 5, 3, 2, 1, 0, 4, 1, 2, 3, 4, 5, 3, 2, 1, 0, 4, 0, 0};
 	private byte[] scores;
 	private Executable executable;
 	

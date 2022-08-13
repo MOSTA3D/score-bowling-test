@@ -22,7 +22,7 @@ public class ServiceTest {
 	public void reInitialize() {
 		// given for those who havn't one
 		playerMap = new HashMap<>();
-		byte[] scores = {1, 2, 3, 4, 5, 3, 2, 1, 0, 4, 1, 2, 3, 4, 5, 3, 2, 1, 0, 4, 0, 0, 0, 0};
+		byte[] scores = {1, 2, 3, 4, 5, 3, 2, 1, 0, 4, 1, 2, 3, 4, 5, 3, 2, 1, 0, 4, 0, 0};
 		playerMap.put("sheka", scores);
 		byte[] scores2 = scores.clone();
 		scores2[0] = 6;

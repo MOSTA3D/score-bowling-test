@@ -8,6 +8,7 @@ public class BowlingApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(BowlingApplication.class, args);
+		System.out.println("SERVER INIT...");
 	}
 
 }
